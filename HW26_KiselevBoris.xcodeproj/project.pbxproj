@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D864488D28ACF3D20066028D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488C28ACF3D20066028D /* Model.swift */; };
+		D864488F28ACF3E40066028D /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488E28ACF3E40066028D /* Presenter.swift */; };
+		D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489028ACF3F50066028D /* DlegateProtocols.swift */; };
 		D8B1D4F028ACCFE500FDE11F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1D4EF28ACCFE500FDE11F /* AppDelegate.swift */; };
 		D8B1D4F228ACCFE500FDE11F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1D4F128ACCFE500FDE11F /* SceneDelegate.swift */; };
 		D8B1D4F428ACCFE500FDE11F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1D4F328ACCFE500FDE11F /* ViewController.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D864488C28ACF3D20066028D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		D864488E28ACF3E40066028D /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		D864489028ACF3F50066028D /* DlegateProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DlegateProtocols.swift; sourceTree = "<group>"; };
 		D8B1D4EC28ACCFE500FDE11F /* HW26_KiselevBoris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HW26_KiselevBoris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8B1D4EF28ACCFE500FDE11F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8B1D4F128ACCFE500FDE11F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +45,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D864488728ACF39C0066028D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D8B1D4EF28ACCFE500FDE11F /* AppDelegate.swift */,
+				D8B1D4F128ACCFE500FDE11F /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D864488828ACF3AC0066028D /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				D864488E28ACF3E40066028D /* Presenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		D864488928ACF3B40066028D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D8B1D4F328ACCFE500FDE11F /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D864488A28ACF3BB0066028D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D864488C28ACF3D20066028D /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D864488B28ACF3C10066028D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D864489028ACF3F50066028D /* DlegateProtocols.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		D8B1D4E328ACCFE500FDE11F = {
 			isa = PBXGroup;
 			children = (
@@ -58,9 +105,11 @@
 		D8B1D4EE28ACCFE500FDE11F /* HW26_KiselevBoris */ = {
 			isa = PBXGroup;
 			children = (
-				D8B1D4EF28ACCFE500FDE11F /* AppDelegate.swift */,
-				D8B1D4F128ACCFE500FDE11F /* SceneDelegate.swift */,
-				D8B1D4F328ACCFE500FDE11F /* ViewController.swift */,
+				D864488B28ACF3C10066028D /* Protocols */,
+				D864488A28ACF3BB0066028D /* Model */,
+				D864488928ACF3B40066028D /* View */,
+				D864488828ACF3AC0066028D /* Presenter */,
+				D864488728ACF39C0066028D /* App */,
 				D8B1D4F528ACCFE500FDE11F /* Main.storyboard */,
 				D8B1D4FB28ACCFE700FDE11F /* Assets.xcassets */,
 				D8B1D4FD28ACCFE700FDE11F /* LaunchScreen.storyboard */,
@@ -141,6 +190,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */,
+				D864488F28ACF3E40066028D /* Presenter.swift in Sources */,
+				D864488D28ACF3D20066028D /* Model.swift in Sources */,
 				D8B1D4F428ACCFE500FDE11F /* ViewController.swift in Sources */,
 				D8B1D4F028ACCFE500FDE11F /* AppDelegate.swift in Sources */,
 				D8B1D4FA28ACCFE500FDE11F /* HW26_KiselevBoris.xcdatamodeld in Sources */,
