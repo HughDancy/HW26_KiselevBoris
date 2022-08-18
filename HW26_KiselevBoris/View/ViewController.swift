@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     weak private var viewOutputDelegate: ViewOutputDelegate?
     
     // MARK: - View's
+    
     private lazy var textField: UITextField = {
         var textField = UITextField()
         textField.borderStyle = .roundedRect
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
     }()
     private lazy var button: UIButton = {
         var button = UIButton()
+        button.addTarget(self, action: #selector(addNewUser), for: .touchDown)
         
         return button
     }()
@@ -44,12 +46,11 @@ class ViewController: UIViewController {
         setupLayout()
         tableSettings()
         
-        print(testData)
-        print(testData.count)
         // Do any additional setup after loading the view.
     }
     
     // MARK: - Settings
+    
     private func buttonSetup() {
         button.configuration = .filled()
         button.configuration?.title = "Добавить"
@@ -68,7 +69,18 @@ class ViewController: UIViewController {
         pepolesTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
+    // MARK: - Button Action
+    
+    @objc func addNewUser() {
+        let newImage = UIImage(named: "Man")
+        let newUser = Citizen(name: textField.text ?? "", birth: "bugaga", gender: "bugaga", image: newImage)
+        presenter.testData.append(newUser)
+        pepolesTable.reloadData()
+        print(presenter.testData)
+    }
+    
     // MARK: - Setup layout
+    
     private func setupLayout() {
         textField.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -93,6 +105,7 @@ class ViewController: UIViewController {
 extension ViewController: ViewImputDelegate {
     func setupData(with testData: ([Citizen])) {
         self.testData = testData
+        
     }
     
     func displayData(i: Int) {
@@ -101,22 +114,34 @@ extension ViewController: ViewImputDelegate {
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return testData.count
-        //        return 5
+        return presenter.testData.count
+//        return testData.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = testData[indexPath.row].name
-        //        content.text = "Test"
+        content.text = presenter.testData[indexPath.row].name
         
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        myIndex = tableView.indexPathForSelectedRow?.row ?? 0
+        presenter.updateCell(index: myIndex)
+        let userInfo = UserDetails()
+        navigationController?.pushViewController(userInfo, animated: true)
+    }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        presenter.testData.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .top)
+        tableView.reloadData()
+    }
 }
 

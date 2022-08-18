@@ -12,13 +12,19 @@ struct Citizen {
     var name: String
     var birth: String
     var gender: String
-    //    var image: UIImage
+    var image: UIImage?
 }
+
+let rayan = UIImage(named: "Man")
+let nathan = UIImage(named: "Nathan")
+let sekiro = UIImage(named: "Sekiro")
+let sam = UIImage(named: "Sam")
 
 extension Citizen {
     static var citizen = [
-        Citizen(name: "Ivan Ivanovich", birth: "24.04.1987", gender: "male"),
-        Citizen(name: "Petr Petrovich", birth: "17.02.2000", gender: "male"),
-        Citizen(name: "Stepa Stepanovich", birth: "08.01.1979", gender: "male")
+        Citizen(name: "Rayan Gosling", birth: "12.11.1980", gender: "male", image: rayan),
+        Citizen(name: "Nathan Drake", birth: "17.02.1976", gender: "male", image: nathan),
+        Citizen(name: "Sekiro", birth: "08.01.1469", gender: "male", image: sekiro),
+        Citizen(name: "Sam Bridges", birth: "09.11.2087", gender: "male", image: sam)
     ]
 }

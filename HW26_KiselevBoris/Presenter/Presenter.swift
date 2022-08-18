@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Presenter {
     
@@ -20,6 +21,15 @@ class Presenter {
         self.viewInputDelegate?.setupData(with: testData)
         self.viewInputDelegate?.displayData(i: 0)
     }
+    
+     func updateCell(index: Int) {
+        user.removeAll()
+        user.append(testData[index].name)
+        user.append(testData[index].birth)
+        user.append(testData[index].gender)
+         userImage = testData[index].image ?? rayan!
+    }
+    
 }
 
 
