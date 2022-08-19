@@ -11,7 +11,17 @@ import CoreData
 class CoreDataManager {
     static let instance = CoreDataManager()
     
-    private init() {}
+     init() {}
+    
+    let entityDesc = NSEntityDescription()
+    
+    lazy var context: NSManagedObjectContext = {
+        persistentContainer.viewContext
+    }()
+    
+    func entityForName(entityName: String) -> NSEntityDescription {
+        return NSEntityDescription.entity(forEntityName: entityName, in: context) ?? entityDesc
+    }
     
     // MARK: - Core Data stack
 

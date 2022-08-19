@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
     //MARK: - Delegate and Presenter
+    
+    var manageObject = NSManagedObject(entity: CoreDataManager.instance.entityForName(entityName: "User"), insertInto: CoreDataManager.instance.context)
+   
+    
     
     private var testData: [Citizen] = []
     private let presenter = Presenter()
