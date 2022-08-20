@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D807A79D28AF748B004F08B7 /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D807A79B28AF748B004F08B7 /* User+CoreDataClass.swift */; };
+		D807A79E28AF748B004F08B7 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */; };
 		D864488D28ACF3D20066028D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488C28ACF3D20066028D /* Model.swift */; };
 		D864488F28ACF3E40066028D /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488E28ACF3E40066028D /* Presenter.swift */; };
 		D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489028ACF3F50066028D /* DlegateProtocols.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D807A79B28AF748B004F08B7 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D864488C28ACF3D20066028D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D864488E28ACF3E40066028D /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		D864489028ACF3F50066028D /* DlegateProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DlegateProtocols.swift; sourceTree = "<group>"; };
@@ -114,6 +118,8 @@
 		D8B1D4EE28ACCFE500FDE11F /* HW26_KiselevBoris */ = {
 			isa = PBXGroup;
 			children = (
+				D807A79B28AF748B004F08B7 /* User+CoreDataClass.swift */,
+				D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */,
 				D864488B28ACF3C10066028D /* Protocols */,
 				D864488A28ACF3BB0066028D /* Model */,
 				D864488928ACF3B40066028D /* View */,
@@ -201,12 +207,14 @@
 			files = (
 				D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */,
 				D864489328ACF4BC0066028D /* UserDetails.swift in Sources */,
+				D807A79E28AF748B004F08B7 /* User+CoreDataProperties.swift in Sources */,
 				D864489628ADEE3F0066028D /* VarAndConst.swift in Sources */,
 				D864488F28ACF3E40066028D /* Presenter.swift in Sources */,
 				D864488D28ACF3D20066028D /* Model.swift in Sources */,
 				D8B1D4F428ACCFE500FDE11F /* ViewController.swift in Sources */,
 				D8B1D4F028ACCFE500FDE11F /* AppDelegate.swift in Sources */,
 				D8B1D4FA28ACCFE500FDE11F /* HW26_KiselevBoris.xcdatamodeld in Sources */,
+				D807A79D28AF748B004F08B7 /* User+CoreDataClass.swift in Sources */,
 				D864489828AF46A40066028D /* CoreDataManager.swift in Sources */,
 				D8B1D4F228ACCFE500FDE11F /* SceneDelegate.swift in Sources */,
 			);

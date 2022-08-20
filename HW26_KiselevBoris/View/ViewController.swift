@@ -11,10 +11,8 @@ import CoreData
 class ViewController: UIViewController {
     //MARK: - Delegate and Presenter
     
-    var manageObject = NSManagedObject(entity: CoreDataManager.instance.entityForName(entityName: "User"), insertInto: CoreDataManager.instance.context)
-   
-    
-    
+    var manageObject = User(entity: CoreDataManager.instance.entityForName(entityName: "User"), insertInto: CoreDataManager.instance.context)
+
     private var testData: [Citizen] = []
     private let presenter = Presenter()
     weak private var viewOutputDelegate: ViewOutputDelegate?
@@ -46,12 +44,46 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(displayP3Red: 0.96, green: 0.96, blue: 0.98, alpha: 1)
         title = "Users"
         
+        coreDataSetup()
         addSubviews()
         buttonSetup()
         setupLayout()
         tableSettings()
         
         // Do any additional setup after loading the view.
+    }
+    
+    // MARK: - CoreData setup
+    func coreDataSetup() {
+        
+        manageObject.name = "Rayan Gosling"
+        manageObject.birth = "12.11.1980"
+        manageObject.gender = "male"
+        manageObject.image = rayanData
+        CoreDataManager.instance.saveContext()
+        
+        manageObject.name = "Nathan Drake"
+        manageObject.birth = "17.02.1976"
+        manageObject.gender = "male"
+        manageObject.image = nathanData
+        CoreDataManager.instance.saveContext()
+//        
+//        manageObject.name = "Sekiro"
+//        manageObject.birth = "08.01.1469"
+//        manageObject.gender = "male"
+//        manageObject.image = sekiroData
+//        CoreDataManager.instance.saveContext()
+//        
+//        manageObject.name = "Sam Bridges"
+//        manageObject.birth = "09.11.2087"
+//        manageObject.gender = "male"
+//        manageObject.image = samData
+//        
+//        CoreDataManager.instance.saveContext()
+        let name = manageObject.name
+        let secondNmae = manageObject.name
+        let birth = manageObject.birth
+        print(CoreDataManager.persistentContainer)
     }
     
     // MARK: - Settings
