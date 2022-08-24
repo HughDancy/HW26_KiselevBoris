@@ -11,7 +11,8 @@ import CoreData
 class ViewController: UIViewController {
     //MARK: - Delegate and Presenter
     
-    var manageObject = User(entity: CoreDataManager.instance.entityForName(entityName: "User"), insertInto: CoreDataManager.instance.context)
+    var manager = CoreDataManager()
+    var users = [NSManagedObject]()
 
     private var testData: [Citizen] = []
     private let presenter = Presenter()
@@ -25,66 +26,65 @@ class ViewController: UIViewController {
         
         return textField
     }()
+    
     private lazy var button: UIButton = {
         var button = UIButton()
         button.addTarget(self, action: #selector(addNewUser), for: .touchDown)
         
         return button
     }()
-    private lazy var pepolesTable = UITableView(frame: .zero, style: UITableView.Style.insetGrouped)
+    
+   lazy var pepolesTable: UITableView = {
+        var peoplesTable = UITableView(frame: .zero, style: UITableView.Style.insetGrouped)
+        peoplesTable.delegate = self
+        peoplesTable.dataSource = self
+        peoplesTable.backgroundColor = .clear
+        peoplesTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        return peoplesTable
+    }()
     
     // MARK: - Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        pepolesTable.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.setViewImputDelegate(viewInputDelegate: self)
         self.viewOutputDelegate = presenter
         self.viewOutputDelegate?.getData()
+       
+        
+//        coreDataSetup()
+        
         
         view.backgroundColor = UIColor(displayP3Red: 0.96, green: 0.96, blue: 0.98, alpha: 1)
         title = "Users"
         
-        coreDataSetup()
+        users = manager.fetchUsers()
+
+        
         addSubviews()
         buttonSetup()
         setupLayout()
-        tableSettings()
+//        tableSettings()
         
         // Do any additional setup after loading the view.
     }
     
+
     // MARK: - CoreData setup
-    func coreDataSetup() {
-        
-        manageObject.name = "Rayan Gosling"
-        manageObject.birth = "12.11.1980"
-        manageObject.gender = "male"
-        manageObject.image = rayanData
-        CoreDataManager.instance.saveContext()
-        
-        manageObject.name = "Nathan Drake"
-        manageObject.birth = "17.02.1976"
-        manageObject.gender = "male"
-        manageObject.image = nathanData
-        CoreDataManager.instance.saveContext()
-//        
-//        manageObject.name = "Sekiro"
-//        manageObject.birth = "08.01.1469"
-//        manageObject.gender = "male"
-//        manageObject.image = sekiroData
-//        CoreDataManager.instance.saveContext()
-//        
-//        manageObject.name = "Sam Bridges"
-//        manageObject.birth = "09.11.2087"
-//        manageObject.gender = "male"
-//        manageObject.image = samData
-//        
-//        CoreDataManager.instance.saveContext()
-        let name = manageObject.name
-        let secondNmae = manageObject.name
-        let birth = manageObject.birth
-        print(CoreDataManager.persistentContainer)
-    }
+//    func coreDataSetup() {
+//
+//        let fisrtUser = manager.obtainUser(withName: "Rayan Gosling")
+//        let secondUser = manager.obtainUser(withName: "Stranger Thing")
+//        let thirdUser = manager.obtainUser(withName: "Motherfucker")
+////        users.append(fisrtUser)
+////        users.append(secondUser)
+////        users.append(thirdUser)
+//    }
     
     // MARK: - Settings
     
@@ -99,21 +99,16 @@ class ViewController: UIViewController {
         view.addSubview(pepolesTable)
     }
     
-    private func tableSettings() {
-        pepolesTable.delegate = self
-        pepolesTable.dataSource = self
-        pepolesTable.backgroundColor = .clear
-        pepolesTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    }
     
     // MARK: - Button Action
     
     @objc func addNewUser() {
-        let newImage = UIImage(named: "Man")
-        let newUser = Citizen(name: textField.text ?? "", birth: "bugaga", gender: "bugaga", image: newImage)
-        presenter.testData.append(newUser)
+        guard textField.text != "" else { return }
+        let newUser = manager.obtainUser(withName: textField.text ?? "")
+        users.append(newUser)
+        manager.saveContext()
         pepolesTable.reloadData()
-        print(presenter.testData)
+        textField.text = nil
     }
     
     // MARK: - Setup layout
@@ -153,16 +148,14 @@ extension ViewController: ViewImputDelegate {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.testData.count
-//        return testData.count
-        
+        return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = presenter.testData[indexPath.row].name
-        
+        content.text = users[indexPath.row].value(forKey: "name") as? String
+
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
         return cell
@@ -170,15 +163,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = tableView.indexPathForSelectedRow?.row ?? 0
-        presenter.updateCell(index: myIndex)
         let userInfo = UserDetails()
         navigationController?.pushViewController(userInfo, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        presenter.testData.remove(at: indexPath.row)
+        
+        manager.viewContext.delete(users[indexPath.row])
+        users.remove(at: indexPath.row)
+        manager.saveContext()
         tableView.deleteRows(at: [indexPath], with: .top)
         tableView.reloadData()
     }
 }
+
 

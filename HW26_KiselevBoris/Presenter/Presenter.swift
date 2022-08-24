@@ -22,14 +22,6 @@ class Presenter {
         self.viewInputDelegate?.displayData(i: 0)
     }
     
-     func updateCell(index: Int) {
-        user.removeAll()
-        user.append(testData[index].name)
-        user.append(testData[index].birth)
-        user.append(testData[index].gender)
-         userImage = testData[index].image ?? rayan!
-    }
-    
 }
 
 

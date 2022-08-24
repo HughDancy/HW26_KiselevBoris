@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol ViewImputDelegate: AnyObject {
     func setupData(with testData: ([Citizen]))
@@ -15,4 +16,8 @@ protocol ViewImputDelegate: AnyObject {
 protocol ViewOutputDelegate: AnyObject {
     func getData()
     func saveData()
+}
+
+protocol UpdateUsers: AnyObject {
+    func update(with: [NSManagedObject])
 }
