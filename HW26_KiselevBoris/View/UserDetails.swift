@@ -14,6 +14,8 @@ class UserDetails: UIViewController {
     weak private var viewOutputDelegate: ViewOutputDelegate?
     let manager = CoreDataManager()
     var content = [NSManagedObject]()
+    var user: NSManagedObject?
+    
     
     // MARK: - SubView's
     let userCIntroller = ViewController()
@@ -161,14 +163,24 @@ class UserDetails: UIViewController {
     
     private func adeddContent() {
         //        let content = manager.fetchUsers()
-        userNameLabel.text = content[myIndex].value(forKey: "name") as? String
-        imageProfile.image = UIImage(data: content[myIndex].value(forKey: "image") as? Data ?? data)
-        birthLabel.text = content[myIndex].value(forKey: "birth") as? String
-        genderLabel.text = content[myIndex].value(forKey: "gender") as? String
         
-        userNameTextField.placeholder = content[myIndex].value(forKey: "name") as? String
-        birthTextField.placeholder = content[myIndex].value(forKey: "birth") as? String
-        genderTextField.placeholder = content[myIndex].value(forKey: "gender") as? String
+        userNameLabel.text = user?.value(forKey: "name") as? String
+        imageProfile.image = UIImage(data: user?.value(forKey: "image") as? Data ?? data)
+        birthLabel.text = user?.value(forKey: "birth") as? String
+        genderLabel.text = user?.value(forKey: "gender") as? String
+        
+        userNameTextField.placeholder = user?.value(forKey: "name") as? String
+        birthTextField.placeholder = user?.value(forKey: "birth") as? String
+        genderTextField.placeholder = user?.value(forKey: "gender") as? String
+        
+//        userNameLabel.text = content[myIndex].value(forKey: "name") as? String
+//        imageProfile.image = UIImage(data: content[myIndex].value(forKey: "image") as? Data ?? data)
+//        birthLabel.text = content[myIndex].value(forKey: "birth") as? String
+//        genderLabel.text = content[myIndex].value(forKey: "gender") as? String
+//
+//        userNameTextField.placeholder = content[myIndex].value(forKey: "name") as? String
+//        birthTextField.placeholder = content[myIndex].value(forKey: "birth") as? String
+//        genderTextField.placeholder = content[myIndex].value(forKey: "gender") as? String
     }
     
     // MARK: - Button's Action
@@ -191,26 +203,37 @@ class UserDetails: UIViewController {
         birthTextField.isHidden = true
         genderTextField.isHidden = true
         
+        
         if  userNameTextField.text != "" {
+            user?.setValue(userNameTextField.text, forKey: "name")
             content[myIndex].setValue(userNameTextField.text, forKey: "name")
+//            userCIntroller.manager.saveContext()
+            
+            userNameLabel.text = user?.value(forKey: "name") as? String
             manager.saveContext()
-            userNameLabel.text = content[myIndex].value(forKey: "name") as? String
         }
         
         if birthTextField.text != "" {
-            content[myIndex].setValue(birthTextField.text, forKey: "birth")
+            user?.setValue(birthTextField.text, forKey: "birth")
+//            content[myIndex].setValue(birthTextField.text, forKey: "birth")
+//            manager.saveContext()
+//            birthLabel.text = content[myIndex].value(forKey: "birth") as? String
             manager.saveContext()
-            birthLabel.text = content[myIndex].value(forKey: "birth") as? String
+            birthLabel.text = user?.value(forKey: "birth") as? String
         }
         
         if genderTextField.text != "" {
-            content[myIndex].setValue(genderTextField.text, forKey: "gender")
+            user?.setValue(genderTextField.text, forKey: "gender")
+//            content[myIndex].setValue(genderTextField.text, forKey: "gender")
+//            manager.saveContext()
+//            genderLabel.text = content[myIndex].value(forKey: "gender") as? String
             manager.saveContext()
-            genderLabel.text = content[myIndex].value(forKey: "gender") as? String
+            genderLabel.text = user?.value(forKey: "gender") as? String
         }
-        
+       
         userCIntroller.pepolesTable.reloadData()
-         
+//        userCIntroller.manager.saveContext()
+        
         editButton.isHidden = false
         userNameLabel.isHidden = false
         birthLabel.isHidden = false

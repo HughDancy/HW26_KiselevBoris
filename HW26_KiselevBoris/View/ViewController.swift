@@ -13,12 +13,27 @@ class ViewController: UIViewController {
     
     var manager = CoreDataManager()
     var users = [NSManagedObject]()
-
+    
     private var testData: [Citizen] = []
     private let presenter = Presenter()
     weak private var viewOutputDelegate: ViewOutputDelegate?
+//    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+//
+//        return fetchResultController
+//
+//    }()
+//    let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+//    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+//    let managedContext = NSManagedObjectContext(.mainQueue)
+   
+
     
     // MARK: - View's
+    
     
     private lazy var textField: UITextField = {
         var textField = UITextField()
@@ -34,7 +49,7 @@ class ViewController: UIViewController {
         return button
     }()
     
-   lazy var pepolesTable: UITableView = {
+    lazy var pepolesTable: UITableView = {
         var peoplesTable = UITableView(frame: .zero, style: UITableView.Style.insetGrouped)
         peoplesTable.delegate = self
         peoplesTable.dataSource = self
@@ -55,36 +70,23 @@ class ViewController: UIViewController {
         presenter.setViewImputDelegate(viewInputDelegate: self)
         self.viewOutputDelegate = presenter
         self.viewOutputDelegate?.getData()
-       
-        
-//        coreDataSetup()
-        
+        pepolesTable.reloadData()
+//        managedContext.refreshAllObjects()
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        fetchResultCntl = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+//        fetchResultController.delegate = self
+//        try! fetchResultController.performFetch()
+
         
         view.backgroundColor = UIColor(displayP3Red: 0.96, green: 0.96, blue: 0.98, alpha: 1)
         title = "Users"
-        
+       updateData()
         users = manager.fetchUsers()
-
         
         addSubviews()
         buttonSetup()
         setupLayout()
-//        tableSettings()
-        
-        // Do any additional setup after loading the view.
     }
-    
-
-    // MARK: - CoreData setup
-//    func coreDataSetup() {
-//
-//        let fisrtUser = manager.obtainUser(withName: "Rayan Gosling")
-//        let secondUser = manager.obtainUser(withName: "Stranger Thing")
-//        let thirdUser = manager.obtainUser(withName: "Motherfucker")
-////        users.append(fisrtUser)
-////        users.append(secondUser)
-////        users.append(thirdUser)
-//    }
     
     // MARK: - Settings
     
@@ -99,7 +101,16 @@ class ViewController: UIViewController {
         view.addSubview(pepolesTable)
     }
     
+    func updateData() {
+        if manager.persistentContainer.viewContext.hasChanges {
+            print("Context has changed")
+        }
+    }
     
+    func adeddSortDescriptor() {
+        
+    }
+   
     // MARK: - Button Action
     
     @objc func addNewUser() {
@@ -154,8 +165,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
+        let persons = manager.fetchUsers()
         content.text = users[indexPath.row].value(forKey: "name") as? String
-
+        
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
         return cell
@@ -164,6 +176,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         myIndex = tableView.indexPathForSelectedRow?.row ?? 0
         let userInfo = UserDetails()
+        userInfo.user = users[indexPath.row]
         navigationController?.pushViewController(userInfo, animated: true)
     }
     
@@ -177,4 +190,34 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//extension ViewController: NSFetchedResultsControllerDelegate {
+//
+//
+//    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        pepolesTable.beginUpdates()
+//    }
+//
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        switch type {
+//        case .update:
+//            if let indexPath = indexPath {
+//                let user = fetchResultController.object(at: indexPath) as! User
+//                let cell = pepolesTable.cellForRow(at: indexPath)
+//                var content = cell?.defaultContentConfiguration()
+//                content?.text = user.name
+//                cell?.contentConfiguration = content
+//                print("aloha")
+//            }
+//
+//        default:
+//            break
+//        }
+//    }
+//
+//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        pepolesTable.endUpdates()
+//        pepolesTable.reloadData()
+//    }
+//}
+//
 
