@@ -49,7 +49,13 @@ class CoreDataManager {
         user.gender = "male"
         user.image = imagesData.randomElement() as? Data
         
-        try! viewContext.save()
+        do {
+            try? viewContext.save()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
         self.saveContext()
         
         do {

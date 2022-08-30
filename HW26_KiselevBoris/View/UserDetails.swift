@@ -11,17 +11,13 @@ import CoreData
 class UserDetails: UIViewController {
     
     private let presenter = Presenter()
-    weak private var viewOutputDelegate: ViewOutputDelegate?
     let manager = CoreDataManager()
     var content = [NSManagedObject]()
     var user: NSManagedObject?
     
     
     // MARK: - SubView's
-    let userCIntroller = ViewController()
-    
-    let image = UIImage(named: "Man")
-    
+
     var editButton: UIButton = {
         var editButton = UIButton()
         editButton.tintColor = .systemCyan
@@ -42,99 +38,63 @@ class UserDetails: UIViewController {
     var imageProfile: UIImageView = {
         var imageProfile = UIImageView()
         imageProfile.contentMode = .scaleAspectFill
-        let image = UIImage(named: "Man")
-        imageProfile.image = image
-        
 
         return imageProfile
     }()
     
     var userIcon: UIImageView = {
-        var userIcon = UIImageView()
-        let image = UIImage(named: "userIcon")
-        userIcon.image = image
-        
-        return userIcon
+        return iconCreate(with: "userIcon")
     }()
     
     var birthIcon: UIImageView = {
-        var birthIcon = UIImageView()
-        let image = UIImage(named: "birthIcon")
-        birthIcon.image = image
-        
-        return birthIcon
+        return iconCreate(with: "birthIcon")
     }()
     
     var genderICon: UIImageView = {
-        var genderIcon = UIImageView()
-        let image = UIImage(named: "genderIcon")
-        genderIcon.image = image
-        
-        return genderIcon
+        return iconCreate(with: "genderIcon")
     }()
     
     var userNameLabel: UILabel = {
-        var userNameLabel = UILabel()
-        userNameLabel.font = UIFont(name: "Hoefler Text", size: 20)
-        
-        return userNameLabel
+        return labelCreate()
     }()
     
     var birthLabel: UILabel = {
-        var birthLabel = UILabel()
-        birthLabel.font = UIFont(name: "Hoefler Text", size: 20)
-        
-        return birthLabel
+        return labelCreate()
     }()
     
     var genderLabel: UILabel = {
-        var genderLabel = UILabel()
-        genderLabel.font = UIFont(name: "Hoefler Text", size: 20)
-        
-        return genderLabel
+        return labelCreate()
     }()
     
     var userNameTextField: UITextField =  {
-        var userNameTextField = UITextField()
-        userNameTextField.font = UIFont(name: "Hoefler Text", size: 20)
-        userNameTextField.isHidden = true
-        
-        return userNameTextField
+        return createTextField()
     }()
     
     var birthTextField: UITextField = {
-        var birthTextField = UITextField()
-        birthTextField.font = UIFont(name: "Hoefler Text", size: 20)
-        birthTextField.isHidden = true
-        
-        return birthTextField
+        return createTextField()
     }()
     
     var genderTextField: UITextField = {
-        var genderTextField = UITextField()
-        genderTextField.font = UIFont(name: "Hoefler Text", size: 20)
-        genderTextField.isHidden = true
-        
-        return genderTextField
+        return createTextField()
     }()
-    
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        content = manager.fetchUsers()
-        addingSbuviews()
+//        content = manager.fetchUsers()
+        content = presenter.fetchedUsers()
+        setupHierarchy()
         imageProfile.center = view.center
         buttonsSetup()
         adeddContent()
         setupLayout()
-        
+        view.backgroundColor = .white
     }
     
     // MARK: - Settings
     
-    private func addingSbuviews() {
+    private func setupHierarchy() {
         view.addSubview(editButton)
         view.addSubview(saveButton)
         view.addSubview(imageProfile)
@@ -147,9 +107,6 @@ class UserDetails: UIViewController {
         view.addSubview(userNameTextField)
         view.addSubview(birthTextField)
         view.addSubview(genderTextField)
-        
-        view.backgroundColor = .white
-        
     }
     
     private func buttonsSetup() {
@@ -160,9 +117,7 @@ class UserDetails: UIViewController {
         saveButton.configuration?.title = "Save"
     }
     
-    
     private func adeddContent() {
-        //        let content = manager.fetchUsers()
         
         userNameLabel.text = user?.value(forKey: "name") as? String
         imageProfile.image = UIImage(data: user?.value(forKey: "image") as? Data ?? data)
@@ -172,24 +127,45 @@ class UserDetails: UIViewController {
         userNameTextField.placeholder = user?.value(forKey: "name") as? String
         birthTextField.placeholder = user?.value(forKey: "birth") as? String
         genderTextField.placeholder = user?.value(forKey: "gender") as? String
-        
-//        userNameLabel.text = content[myIndex].value(forKey: "name") as? String
-//        imageProfile.image = UIImage(data: content[myIndex].value(forKey: "image") as? Data ?? data)
-//        birthLabel.text = content[myIndex].value(forKey: "birth") as? String
-//        genderLabel.text = content[myIndex].value(forKey: "gender") as? String
-//
-//        userNameTextField.placeholder = content[myIndex].value(forKey: "name") as? String
-//        birthTextField.placeholder = content[myIndex].value(forKey: "birth") as? String
-//        genderTextField.placeholder = content[myIndex].value(forKey: "gender") as? String
     }
     
     // MARK: - Button's Action
     
     @objc private func tapEditButton() {
+        activateEdit()
+    }
+    
+    @objc private func tapSaveButton() {
+        activateSave()
+        
+        if  userNameTextField.text != "" {
+            user?.setValue(userNameTextField.text, forKey: "name")
+            content[myIndex].setValue(userNameTextField.text, forKey: "name")
+            userNameLabel.text = user?.value(forKey: "name") as? String
+            presenter.saveContext()
+        }
+        
+        if birthTextField.text != "" {
+            user?.setValue(birthTextField.text, forKey: "birth")
+            content[myIndex].setValue(birthTextField.text, forKey: "birth")
+            birthLabel.text = user?.value(forKey: "birth") as? String
+            presenter.saveContext()
+        }
+        
+        if genderTextField.text != "" {
+            user?.setValue(genderTextField.text, forKey: "gender")
+            content[myIndex].setValue(genderTextField.text, forKey: "gender")
+            genderLabel.text = user?.value(forKey: "gender") as? String
+            presenter.saveContext()
+        }
+    }
+    
+    func activateEdit() {
         editButton.isHidden = true
         userNameLabel.isHidden = true
         birthLabel.isHidden = true
         genderLabel.isHidden = true
+        
         
         saveButton.isHidden = false
         userNameTextField.isHidden = false
@@ -197,42 +173,11 @@ class UserDetails: UIViewController {
         genderTextField.isHidden = false
     }
     
-    @objc private func tapSaveButton() {
+    func activateSave() {
         saveButton.isHidden = true
         userNameTextField.isHidden = true
         birthTextField.isHidden = true
         genderTextField.isHidden = true
-        
-        
-        if  userNameTextField.text != "" {
-            user?.setValue(userNameTextField.text, forKey: "name")
-            content[myIndex].setValue(userNameTextField.text, forKey: "name")
-//            userCIntroller.manager.saveContext()
-            
-            userNameLabel.text = user?.value(forKey: "name") as? String
-            manager.saveContext()
-        }
-        
-        if birthTextField.text != "" {
-            user?.setValue(birthTextField.text, forKey: "birth")
-//            content[myIndex].setValue(birthTextField.text, forKey: "birth")
-//            manager.saveContext()
-//            birthLabel.text = content[myIndex].value(forKey: "birth") as? String
-            manager.saveContext()
-            birthLabel.text = user?.value(forKey: "birth") as? String
-        }
-        
-        if genderTextField.text != "" {
-            user?.setValue(genderTextField.text, forKey: "gender")
-//            content[myIndex].setValue(genderTextField.text, forKey: "gender")
-//            manager.saveContext()
-//            genderLabel.text = content[myIndex].value(forKey: "gender") as? String
-            manager.saveContext()
-            genderLabel.text = user?.value(forKey: "gender") as? String
-        }
-       
-        userCIntroller.pepolesTable.reloadData()
-//        userCIntroller.manager.saveContext()
         
         editButton.isHidden = false
         userNameLabel.isHidden = false
@@ -296,7 +241,6 @@ class UserDetails: UIViewController {
         genderTextField.topAnchor.constraint(equalTo: birthIcon.bottomAnchor, constant: 30).isActive = true
         genderTextField.leadingAnchor.constraint(equalTo: genderICon.trailingAnchor, constant: 20).isActive = true
     }
-    
 }
 
 

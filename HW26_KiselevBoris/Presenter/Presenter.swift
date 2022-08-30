@@ -6,33 +6,31 @@
 //
 
 import Foundation
-import UIKit
+import CoreData
 
 class Presenter {
+    let dataManager = CoreDataManager()
     
-    weak private var viewInputDelegate: ViewImputDelegate?
-    var testData = Citizen.citizen
-    
-    func setViewImputDelegate(viewInputDelegate: ViewImputDelegate?) {
-        self.viewInputDelegate = viewInputDelegate
+    func fetchedUsers() -> [NSManagedObject] {
+        let storage = dataManager.fetchUsers()
+        return storage
     }
     
-    private func loadTestData() {
-        self.viewInputDelegate?.setupData(with: testData)
-        self.viewInputDelegate?.displayData(i: 0)
+    func saveContext() {
+        dataManager.saveContext()
+    }
+  
+    func obtainUser(with name: String) -> User {
+        dataManager.obtainUser(withName: name)
     }
     
+    func deleteUser(user: User) {
+        dataManager.viewContext.delete(user)
+    }
 }
 
 
-extension Presenter: ViewOutputDelegate {
-    func getData() {
-        loadTestData()
-    }
-    
-    func saveData() {
-        print("0")
-    }
+
     
     
-}
+

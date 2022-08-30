@@ -11,7 +11,6 @@
 		D807A79E28AF748B004F08B7 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */; };
 		D864488D28ACF3D20066028D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488C28ACF3D20066028D /* Model.swift */; };
 		D864488F28ACF3E40066028D /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864488E28ACF3E40066028D /* Presenter.swift */; };
-		D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489028ACF3F50066028D /* DlegateProtocols.swift */; };
 		D864489328ACF4BC0066028D /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489228ACF4BC0066028D /* UserDetails.swift */; };
 		D864489628ADEE3F0066028D /* VarAndConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489528ADEE3F0066028D /* VarAndConst.swift */; };
 		D864489828AF46A40066028D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D864489728AF46A40066028D /* CoreDataManager.swift */; };
@@ -29,7 +28,6 @@
 		D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D864488C28ACF3D20066028D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D864488E28ACF3E40066028D /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
-		D864489028ACF3F50066028D /* DlegateProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DlegateProtocols.swift; sourceTree = "<group>"; };
 		D864489228ACF4BC0066028D /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		D864489528ADEE3F0066028D /* VarAndConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarAndConst.swift; sourceTree = "<group>"; };
 		D864489728AF46A40066028D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -91,14 +89,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		D864488B28ACF3C10066028D /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				D864489028ACF3F50066028D /* DlegateProtocols.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		D8B1D4E328ACCFE500FDE11F = {
 			isa = PBXGroup;
 			children = (
@@ -120,7 +110,6 @@
 			children = (
 				D807A79B28AF748B004F08B7 /* User+CoreDataClass.swift */,
 				D807A79C28AF748B004F08B7 /* User+CoreDataProperties.swift */,
-				D864488B28ACF3C10066028D /* Protocols */,
 				D864488A28ACF3BB0066028D /* Model */,
 				D864488928ACF3B40066028D /* View */,
 				D864488828ACF3AC0066028D /* Presenter */,
@@ -205,7 +194,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D864489128ACF3F50066028D /* DlegateProtocols.swift in Sources */,
 				D864489328ACF4BC0066028D /* UserDetails.swift in Sources */,
 				D807A79E28AF748B004F08B7 /* User+CoreDataProperties.swift in Sources */,
 				D864489628ADEE3F0066028D /* VarAndConst.swift in Sources */,

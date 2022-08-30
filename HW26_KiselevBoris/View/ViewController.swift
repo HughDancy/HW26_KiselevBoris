@@ -9,31 +9,14 @@ import UIKit
 import CoreData
 
 class ViewController: UIViewController {
+    
     //MARK: - Delegate and Presenter
     
+    private let presenter = Presenter()
     var manager = CoreDataManager()
     var users = [NSManagedObject]()
-    
-    private var testData: [Citizen] = []
-    private let presenter = Presenter()
-    weak private var viewOutputDelegate: ViewOutputDelegate?
-//    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-//
-//        return fetchResultController
-//
-//    }()
-//    let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-//    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//    let managedContext = NSManagedObjectContext(.mainQueue)
-   
 
-    
     // MARK: - View's
-    
     
     private lazy var textField: UITextField = {
         var textField = UITextField()
@@ -49,7 +32,7 @@ class ViewController: UIViewController {
         return button
     }()
     
-    lazy var pepolesTable: UITableView = {
+    lazy var peopolesTable: UITableView = {
         var peoplesTable = UITableView(frame: .zero, style: UITableView.Style.insetGrouped)
         peoplesTable.delegate = self
         peoplesTable.dataSource = self
@@ -62,26 +45,16 @@ class ViewController: UIViewController {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
-        pepolesTable.reloadData()
+        peopolesTable.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.setViewImputDelegate(viewInputDelegate: self)
-        self.viewOutputDelegate = presenter
-        self.viewOutputDelegate?.getData()
-        pepolesTable.reloadData()
-//        managedContext.refreshAllObjects()
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        fetchResultCntl = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-//        fetchResultController.delegate = self
-//        try! fetchResultController.performFetch()
-
+        peopolesTable.reloadData()
+        users = presenter.fetchedUsers()
         
         view.backgroundColor = UIColor(displayP3Red: 0.96, green: 0.96, blue: 0.98, alpha: 1)
         title = "Users"
-       updateData()
-        users = manager.fetchUsers()
         
         addSubviews()
         buttonSetup()
@@ -98,27 +71,17 @@ class ViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(textField)
         view.addSubview(button)
-        view.addSubview(pepolesTable)
+        view.addSubview(peopolesTable)
     }
     
-    func updateData() {
-        if manager.persistentContainer.viewContext.hasChanges {
-            print("Context has changed")
-        }
-    }
-    
-    func adeddSortDescriptor() {
-        
-    }
-   
     // MARK: - Button Action
     
     @objc func addNewUser() {
         guard textField.text != "" else { return }
-        let newUser = manager.obtainUser(withName: textField.text ?? "")
+        let newUser = presenter.obtainUser(with: textField.text ?? "")
         users.append(newUser)
-        manager.saveContext()
-        pepolesTable.reloadData()
+        presenter.saveContext()
+        peopolesTable.reloadData()
         textField.text = nil
     }
     
@@ -127,7 +90,7 @@ class ViewController: UIViewController {
     private func setupLayout() {
         textField.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
-        pepolesTable.translatesAutoresizingMaskIntoConstraints = false
+        peopolesTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 35),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -135,26 +98,15 @@ class ViewController: UIViewController {
             button.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
             button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            pepolesTable.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 25),
-            pepolesTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            pepolesTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            pepolesTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            peopolesTable.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 25),
+            peopolesTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            peopolesTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            peopolesTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
 }
 
 // MARK: - ViewController Extension
-
-extension ViewController: ViewImputDelegate {
-    func setupData(with testData: ([Citizen])) {
-        self.testData = testData
-        
-    }
-    
-    func displayData(i: Int) {
-        
-    }
-}
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -165,7 +117,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        let persons = manager.fetchUsers()
         content.text = users[indexPath.row].value(forKey: "name") as? String
         
         cell.contentConfiguration = content
@@ -181,43 +132,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
-        manager.viewContext.delete(users[indexPath.row])
+        let user = users[indexPath.row] as! User
+        presenter.deleteUser(user: user)
         users.remove(at: indexPath.row)
-        manager.saveContext()
+        presenter.saveContext()
         tableView.deleteRows(at: [indexPath], with: .top)
         tableView.reloadData()
     }
 }
 
-//extension ViewController: NSFetchedResultsControllerDelegate {
-//
-//
-//    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        pepolesTable.beginUpdates()
-//    }
-//
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        switch type {
-//        case .update:
-//            if let indexPath = indexPath {
-//                let user = fetchResultController.object(at: indexPath) as! User
-//                let cell = pepolesTable.cellForRow(at: indexPath)
-//                var content = cell?.defaultContentConfiguration()
-//                content?.text = user.name
-//                cell?.contentConfiguration = content
-//                print("aloha")
-//            }
-//
-//        default:
-//            break
-//        }
-//    }
-//
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        pepolesTable.endUpdates()
-//        pepolesTable.reloadData()
-//    }
-//}
-//
+
 

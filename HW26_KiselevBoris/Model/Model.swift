@@ -15,10 +15,7 @@ struct Citizen {
     var image: UIImage?
 }
 
-let rayan = UIImage(named: "Man")
-let nathan = UIImage(named: "Nathan")
-let sekiro = UIImage(named: "Sekiro")
-let sam = UIImage(named: "Sam")
+
 
 extension Citizen {
     static var citizen = [
