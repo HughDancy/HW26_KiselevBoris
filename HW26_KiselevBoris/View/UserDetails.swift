@@ -18,7 +18,7 @@ class UserDetails: UIViewController {
     
     // MARK: - SubView's
 
-    var editButton: UIButton = {
+    lazy var editButton: UIButton = {
         var editButton = UIButton()
         editButton.tintColor = .systemCyan
         editButton.addTarget(self, action: #selector(tapEditButton), for: .touchDown)
@@ -26,7 +26,7 @@ class UserDetails: UIViewController {
         return editButton
     }()
     
-    var saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
         var saveButton = UIButton()
         saveButton.tintColor = .systemGreen
         saveButton.isHidden = true
